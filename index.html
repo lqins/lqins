@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>锻炼计时</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .exercise {
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .exercise h2 {
+      margin-bottom: 20px;
+    }
+    .exercise button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .exercise button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 正抬 -->
+  <div class="exercise" id="front-lift">
+    <h2>正抬</h2>
+    <p>时间：<span id="front-time">0</span>秒</p>
+    <button id="front-button">开始</button>
+    <p>总计：<span id="front-total">0</span></p>
+  </div>
+
+  <!-- 侧抬 -->
+  <div class="exercise" id="side-lift">
+    <h2>侧抬</h2>
+    <p>时间：<span id="side-time">0</span>秒</p>
+    <button id="side-button">开始</button>
+    <p>总计：<span id="side-total">0</span></p>
+  </div>
+
+  <script>
+    function startExercise(exerciseId, buttonId, timeId, totalId) {
+      let time = 0;
+      let total = 0;
+      let interval;
+
+      const button = document.getElementById(buttonId);
+      const timeDisplay = document.getElementById(timeId);
+      const totalDisplay = document.getElementById(totalId);
+
+      button.addEventListener('click', function() {
+        // 禁用按钮，避免重复点击
+        button.disabled = true;
+        button.textContent = '锻炼中...';
+
+        // 开始计时
+        interval = setInterval(() => {
+          time++;
+          timeDisplay.textContent = time;
+          if (time === 10) {
+            clearInterval(interval); // 计时到10秒后停止
+            total++; // 总计加1
+            totalDisplay.textContent = total;
+            button.disabled = false; // 恢复按钮状态
+            button.textContent = '开始'; // 恢复按钮文字
+            time = 0; // 重置时间
+            timeDisplay.textContent = time;
+          }
+        }, 1000);
+      });
+    }
+
+    // 启动正抬和侧抬的计时功能
+    startExercise('front-lift', 'front-button', 'front-time', 'front-total');
+    startExercise('side-lift', 'side-button', 'side-time', 'side-total');
+  </script>
+
+</body>
+</html>
